@@ -104,9 +104,11 @@ class Home extends React.Component {
     }
     return (
       <div>
-        <div className={css(styles.header)}>
-          Spoke is a new way to run campaigns using text messaging.
+        <div className={css(styles.header)}>Welcome to Reach98</div>
+        <div className={css(styles.secondaryHeader)}>
+          Powered by A+G and Spoke
         </div>
+        <br />
         <div>
           <a
             id="login"
