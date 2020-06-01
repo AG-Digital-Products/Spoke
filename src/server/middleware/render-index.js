@@ -29,7 +29,7 @@ const rollbarScript = process.env.ROLLBAR_CLIENT_TOKEN
 // good for doing dev offline
 const externalLinks = process.env.NO_EXTERNAL_LINKS
   ? ""
-  : '<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins">';
+  : '<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">';
 
 export default function renderIndex(html, css, assetMap) {
   return `
@@ -43,7 +43,7 @@ export default function renderIndex(html, css, assetMap) {
     <style>
       /* CSS declarations go here */
       body {
-        font-family: 'Poppins';
+        font-family: 'Roboto', sans-serif;
         position: absolute;
         top: 0;
         bottom: 0;
@@ -60,7 +60,7 @@ export default function renderIndex(html, css, assetMap) {
     </style>
     <style data-aphrodite>${css.content}</style>
     ${rollbarScript}
-    <link rel="icon" href="https://s3-us-west-1.amazonaws.com/spoke-public/spoke_logo.svg">
+    <link rel="icon" href="https://textforagdigital.s3.us-east-2.amazonaws.com/static/agfavicon.png">
   </head>
   <body>
     <div id="mount">${html}</div>

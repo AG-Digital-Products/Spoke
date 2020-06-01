@@ -126,7 +126,7 @@ class Home extends React.Component {
       <div className={css(styles.container)}>
         <div className={css(styles.logoDiv)}>
           <img
-            src="https://s3-us-west-1.amazonaws.com/spoke-public/spoke_logo.svg"
+            src="https://textforagdigital.s3.us-east-2.amazonaws.com/static/agfavicon.png"
             className={css(styles.logoImg)}
           />
         </div>

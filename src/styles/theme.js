@@ -1,6 +1,6 @@
 import tinycolor from "tinycolor2";
 
-const coreBackgroundColor = global.CORE_BACKGROUND_COLOR || "rgb(83, 180, 119)";
+const coreBackgroundColor = global.CORE_BACKGROUND_COLOR || "#A72A17";
 
 const colors = {
   coreBackgroundColor: coreBackgroundColor,
@@ -18,7 +18,7 @@ const colors = {
   darkBlue: "rgb(13, 81, 139)",
   red: "rgb(245, 91, 91)",
   lightRed: "rgb(255, 141, 141)",
-  darkRed: "rgb(237, 60, 57)",
+  darkRed: "#A72A17",
   green: "rgb(83, 180, 119)",
   darkGreen: "rgb(24, 154, 52)",
   darkGray: "rgb(54, 67, 80)",
@@ -31,7 +31,7 @@ const colors = {
   lightYellow: "rgb(252, 214, 120)"
 };
 
-const defaultFont = "Poppins";
+const defaultFont = "Roboto";
 
 const text = {
   body: {
