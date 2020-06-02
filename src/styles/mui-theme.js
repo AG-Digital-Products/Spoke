@@ -7,7 +7,7 @@ const muiTheme = getMuiTheme(
   {
     fontFamily: "Roboto",
     palette: {
-      primary1Color: theme.colors.green,
+      primary1Color: theme.colors.red,
       textColor: theme.text.body.color,
       primary2Color: theme.colors.orange,
       primary3Color: grey400,
