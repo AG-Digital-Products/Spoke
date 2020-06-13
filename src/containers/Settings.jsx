@@ -149,11 +149,9 @@ class Settings extends React.Component {
 
   renderTwilioAuthForm() {
     const { organization } = this.props.data;
-    const {
-      twilioAccountSid,
-      twilioAuthToken,
-      twilioMessageServiceSid
-    } = organization;
+    const twilioAccountSid = "",
+      twilioAuthToken = "";
+    const { twilioMessageServiceSid } = organization;
     const allSet =
       twilioAccountSid && twilioAuthToken && twilioMessageServiceSid;
     let baseUrl = "http://base";
