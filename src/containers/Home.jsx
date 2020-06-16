@@ -110,14 +110,35 @@ class Home extends React.Component {
         </div>
         <br />
         <div>
-          <a
+          <button
             id="login"
-            className={css(styles.link_dark_bg)}
+            className={css(styles.login_link)}
             href="/login"
             onClick={this.handleOrgInviteClick}
+            style={{
+              border: "10px",
+              boxSizing: "border-box",
+              display: "inline-block",
+              fontFamily: "Roboto",
+              cursor: "pointer",
+              textDecoration: "none",
+              margin: "0px",
+              padding: "0px",
+              outline: "none",
+              fontWeight: "inherit",
+              position: "relative",
+              height: "36px",
+              lineHeight: "36px",
+              width: "25%",
+              borderRadius: "2px",
+              transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
+              backgroundColor: "white",
+              textAlign: "center",
+              color: "#A72A17"
+            }}
           >
             Login and get started
-          </a>
+          </button>
         </div>
       </div>
     );
