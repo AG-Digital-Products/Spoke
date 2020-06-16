@@ -128,7 +128,7 @@ class Home extends React.Component {
               color: "#A72A17"
             }}
           >
-            Login and get started
+            Get Started
           </button>
         </div>
       </div>
