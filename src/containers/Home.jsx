@@ -110,11 +110,10 @@ class Home extends React.Component {
         </div>
         <br />
         <div>
-          <button
+          <a
             id="login"
-            className={css(styles.login_link)}
+            className="button"
             href="/login"
-            onClick={this.handleOrgInviteClick}
             style={{
               border: "10px",
               boxSizing: "border-box",
@@ -138,7 +137,7 @@ class Home extends React.Component {
             }}
           >
             Get Started
-          </button>
+          </a>
         </div>
       </div>
     );
