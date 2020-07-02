@@ -60,7 +60,7 @@ export default function renderIndex(html, css, assetMap) {
     </style>
     <style data-aphrodite>${css.content}</style>
     ${rollbarScript}
-    <link rel="icon" href="https://textforagdigital.s3.us-east-2.amazonaws.com/static/agfavicon.png">
+    <link rel="icon" href="https://textforagdigital.s3.us-east-2.amazonaws.com/static/reach98favicon.png">
   </head>
   <body>
     <div id="mount">${html}</div>
