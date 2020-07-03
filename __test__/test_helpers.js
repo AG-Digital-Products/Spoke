@@ -128,7 +128,13 @@ export const updateUserRoles = async (
     userId,
     roles
   };
-  return await runGql(query, variables, adminUser);
+  const result = await runGql(query, variables, adminUser);
+  if (result && result.errors) {
+    throw new Exception(
+      "editOrganizationRoles failed " + JSON.stringify(result)
+    );
+  }
+  return result;
 };
 
 export async function createInvite() {
@@ -201,7 +207,17 @@ export async function setTwilioAuth(user, organization) {
     twilioMessageServiceSid: messageServiceSid
   };
 
-  return await graphql(mySchema, twilioQuery, rootValue, context, variables);
+  const result = await graphql(
+    mySchema,
+    twilioQuery,
+    rootValue,
+    context,
+    variables
+  );
+  if (result && result.errors) {
+    console.log("updateTwilioAuth failed " + JSON.stringify(result));
+  }
+  return result;
 }
 
 export async function createCampaign(

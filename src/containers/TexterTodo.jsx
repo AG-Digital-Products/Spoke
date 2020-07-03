@@ -36,10 +36,13 @@ export const contactDataFragment = `
           text
           isFromContact
         }
+        tags {
+          id
+        }
 `;
 
 export const dataQueryString = `
-  query getContacts($assignmentId: String!, $contactsFilter: ContactsFilter!) {
+  query getContacts($assignmentId: String!, $contactsFilter: ContactsFilter!, $tagGroup: String) {
     assignment(id: $assignmentId) {
       id
       userCannedResponses {
@@ -70,14 +73,23 @@ export const dataQueryString = `
         textingHoursStart
         textingHoursEnd
         textingHoursEnforced
+        batchSize
         organization {
           id
+          tags(group: $tagGroup) {
+            id
+            name
+          }
           textingHoursEnforced
           textingHoursStart
           textingHoursEnd
           optOutMessage
         }
         customFields
+        texterUIConfig {
+          options
+          sideboxChoices
+        }
         interactionSteps {
           id
           script
@@ -158,6 +170,7 @@ export class TexterTodo extends React.Component {
         assignment.contacts.map(c => c.id)
       );
       this.loadingNewContacts = true;
+      // TODO: don't run this ever
       const didAddContacts = (
         await this.props.mutations.findNewCampaignContact(assignment.id)
       ).data.findNewCampaignContact.found;
@@ -224,7 +237,8 @@ const queries = {
           isOptedOut: false,
           validTimezone: true
         },
-        assignmentId: ownProps.params.assignmentId
+        assignmentId: ownProps.params.assignmentId,
+        tagGroup: "texter-tags"
       },
       fetchPolicy: "network-only",
       pollInterval: 20000

@@ -239,6 +239,20 @@ export class AssignmentTexterContact extends React.Component {
     }
   };
 
+  handleUpdateTags = async tags => {
+    const { contact } = this.props;
+    await this.props.mutations.updateContactTags(tags, contact.id);
+  };
+
+  handleReleaseContacts = async releaseConversations => {
+    const { assignment } = this.props;
+    const result = await this.props.mutations.releaseContacts(
+      assignment.id,
+      releaseConversations
+    );
+    return result;
+  };
+
   handleEditStatus = async (messageStatus, finishContact) => {
     const { contact } = this.props;
     await this.props.mutations.editCampaignContactMessageStatus(
@@ -376,6 +390,8 @@ export class AssignmentTexterContact extends React.Component {
           disabled={this.state.disabled}
           onMessageFormSubmit={this.handleMessageFormSubmit}
           onOptOut={this.handleOptOut}
+          onUpdateTags={this.handleUpdateTags}
+          onReleaseContacts={this.handleReleaseContacts}
           onQuestionResponseChange={this.handleQuestionResponseChange}
           onCreateCannedResponse={this.handleCreateCannedResponse}
           onExitTexter={this.props.onExitTexter}
@@ -497,6 +513,20 @@ const mutations = {
       campaignContactId
     }
   }),
+  updateContactTags: ownProps => (tags, campaignContactId) => ({
+    mutation: gql`
+      mutation updateContactTags(
+        $tags: [TagInput]
+        $campaignContactId: String!
+      ) {
+        updateContactTags(tags: $tags, campaignContactId: $campaignContactId)
+      }
+    `,
+    variables: {
+      tags,
+      campaignContactId
+    }
+  }),
   updateQuestionResponses: ownProps => (
     questionResponses,
     campaignContactId
@@ -538,6 +568,35 @@ const mutations = {
     variables: {
       message,
       campaignContactId
+    }
+  }),
+  releaseContacts: ownProps => (assignmentId, releaseConversations) => ({
+    mutation: gql`
+      mutation releaseContacts(
+        $assignmentId: Int!
+        $contactsFilter: ContactsFilter!
+        $releaseConversations: Boolean
+      ) {
+        releaseContacts(
+          assignmentId: $assignmentId
+          releaseConversations: $releaseConversations
+        ) {
+          id
+          contacts(contactsFilter: $contactsFilter) {
+            id
+          }
+          allContactsCount: contactsCount
+        }
+      }
+    `,
+    variables: {
+      assignmentId,
+      releaseConversations,
+      contactsFilter: {
+        messageStatus: ownProps.messageStatusFilter,
+        isOptedOut: false,
+        validTimezone: true
+      }
     }
   }),
   bulkSendMessages: ownProps => assignmentId => ({

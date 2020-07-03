@@ -89,6 +89,15 @@ class Home extends React.Component {
             If you got sent a link by somebody to start texting, ask that person
             to send you the link to join their organization. Then, come back
             here and start texting!
+            <br />
+            <br />
+            <a
+              id="logout"
+              className={css(styles.link_dark_bg)}
+              href="/logout-callback"
+            >
+              Logout
+            </a>
           </div>
         </div>
       );
@@ -175,7 +184,10 @@ const queries = {
           }
         }
       }
-    `
+    `,
+    options: ownProps => ({
+      fetchPolicy: "network-only"
+    })
   }
 };
 
