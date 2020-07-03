@@ -125,7 +125,9 @@ const components = {
     margin: "50 auto",
     overflow: "hidden"
   },
-  logoImg: {},
+  logoImg: {
+    width: "500px !important"
+  },
   popup: {
     backgroundColor: colors.gray50,
     outline: colors.darkGray
