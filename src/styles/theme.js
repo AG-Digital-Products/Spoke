@@ -4,6 +4,9 @@ const coreBackgroundColor = global.CORE_BACKGROUND_COLOR || "#A72A17";
 
 const colors = {
   coreBackgroundColor: coreBackgroundColor,
+  coreBackgroundColorDisabled: tinycolor(coreBackgroundColor)
+    .darken(10)
+    .toHexString(),
   coreHoverColor: tinycolor(coreBackgroundColor)
     .darken(5)
     .toHexString(),
