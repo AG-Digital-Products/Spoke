@@ -268,7 +268,7 @@ export async function processContactLoad(job, maxContacts, organization) {
     const response = await HttpRequest(url, {
       method: "POST",
       retries: 0,
-      timeout: 5000,
+      timeout: 30000,
       headers: {
         Authorization: Van.getAuth(organization),
         "Content-Type": "application/json"
