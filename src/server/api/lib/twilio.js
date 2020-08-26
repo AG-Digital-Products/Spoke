@@ -218,28 +218,6 @@ async function getMessagingServiceSid(
 }
 
 async function sendMessage(message, contact, trx, organization, campaign) {
-  if (!organization) {
-    organization = {
-      id: 7,
-      uuid: "e3b80e6a-32dd-43b6-81f2-e59aa6cbdde3",
-      name: "Tim Ryan for Congress",
-      created_at: "2020-07-21T16:15:55.708Z",
-      features:
-        '{"TWILIO_ACCOUNT_SID":"ACd88fcf6890675bf0d8338f5f63abe654","TWILIO_AUTH_TOKEN_ENCRYPTED":"479a66d05695dce29454ca79df2c10c4:988aae77ccd9da4f41906ee82e0ee36a60468e34e92e3a616b9599738988512af31cd05619faa9e69751b64dacb01382","TWILIO_MESSAGE_SERVICE_SID":"MGd1bcd0c41b060a0e00c1ec42ae12b111","TEXTER_UI_SETTINGS":"{\\"contact-reference\\":true}","NGP_VAN_API_KEY":"9482622b-26f4-6658-b633-f7ecc2bb9c59","NGP_VAN_APP_NAME":"DNCOH.012.hustle"}',
-      texting_hours_enforced: false,
-      texting_hours_start: 9,
-      texting_hours_end: 21,
-      feature: {
-        TWILIO_ACCOUNT_SID: "ACd88fcf6890675bf0d8338f5f63abe654",
-        TWILIO_AUTH_TOKEN_ENCRYPTED:
-          "479a66d05695dce29454ca79df2c10c4:988aae77ccd9da4f41906ee82e0ee36a60468e34e92e3a616b9599738988512af31cd05619faa9e69751b64dacb01382",
-        TWILIO_MESSAGE_SERVICE_SID: "MGd1bcd0c41b060a0e00c1ec42ae12b111",
-        TEXTER_UI_SETTINGS: '{"contact-reference":true}',
-        NGP_VAN_API_KEY: "9482622b-26f4-6658-b633-f7ecc2bb9c59",
-        NGP_VAN_APP_NAME: "DNCOH.012.hustle"
-      }
-    };
-  }
   const twilio = await getTwilio(organization);
   const APITEST = /twilioapitest/.test(message.text);
   if (!twilio && !APITEST) {
