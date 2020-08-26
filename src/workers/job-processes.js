@@ -184,7 +184,7 @@ export const erroredMessageSender = messageSenderCreator(function(mQuery) {
   return mQuery
     .where("created_at", ">", twentyMinutesAgo)
     .where("error_code", "<", 0)
-    .batchSize(20); //TODO: check syntax
+    .limit(20); //TODO: check syntax
 }, "SENDING");
 
 export async function handleIncomingMessages() {
