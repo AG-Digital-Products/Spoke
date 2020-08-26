@@ -145,6 +145,7 @@ async function getMessagingServiceSid(
 }
 
 async function sendMessage(message, contact, trx, organization, campaign) {
+  console.log(organization);
   const twilio = await getTwilio(organization);
   const APITEST = /twilioapitest/.test(message.text);
   if (!twilio && !APITEST) {
