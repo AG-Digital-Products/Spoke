@@ -211,7 +211,9 @@ async function sendMessage(message, contact, trx, organization, campaign) {
     const changes = {};
 
     changes.messageservice_sid = messagingServiceSid;
-
+    if (!messagingServiceSid) {
+      messagingServiceSid = message.messageservice_sid;
+    }
     const messageParams = Object.assign(
       {
         to: message.contact_number,
