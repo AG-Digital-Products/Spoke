@@ -210,15 +210,17 @@ async function sendMessage(message, contact, trx, organization, campaign) {
     }
     const changes = {};
 
-    if (!messagingServiceSid) {
-      messagingServiceSid = message.messageservice_sid;
-    }
-    changes.messageservice_sid = messagingServiceSid;
+    changes.messageservice_sid = messagingServiceSid
+      ? messagingServiceSid
+      : message.messageservice_sid;
+
     const messageParams = Object.assign(
       {
         to: message.contact_number,
         body: message.text,
-        messagingServiceSid: messagingServiceSid,
+        messagingServiceSid: messagingServiceSid
+          ? messagingServiceSid
+          : message.messageservice_sid,
         statusCallback: process.env.TWILIO_STATUS_CALLBACK_URL
       },
       twilioValidityPeriod ? { validityPeriod: twilioValidityPeriod } : {},
