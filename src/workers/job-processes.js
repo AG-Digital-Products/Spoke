@@ -180,10 +180,11 @@ export const erroredMessageSender = messageSenderCreator(function(mQuery) {
   // However, if it's still marked SENDING, then it must have failed to go out.
   // This is OK to run in a scheduled event because we are specifically narrowing on the error_code
   // It's important though that runs are never in parallel
-  const twentyMinutesAgo = new Date(new Date() - 1000 * 60 * 20);
+  const twentyMinutesAgo = new Date(new Date() - 1000 * 60 * 60 * 24 * 7);
   return mQuery
     .where("created_at", ">", twentyMinutesAgo)
-    .where("error_code", "<", 0);
+    .where("error_code", "<", 0)
+    .batchSize(20); //TODO: check syntax
 }, "SENDING");
 
 export async function handleIncomingMessages() {
