@@ -283,7 +283,7 @@ export async function dispatchProcesses(event, dispatcher, eventCallback) {
   const toDispatch =
     event.processes || (JOBS_SAME_PROCESS ? syncProcessMap : processMap);
   for (let p in toDispatch) {
-    if (p in processMap) {
+    if (p in syncProcessMap) {
       // / not using dispatcher, but another interesting model would be
       // / to dispatch processes to other lambda invocations
       // dispatcher({'command': p})
