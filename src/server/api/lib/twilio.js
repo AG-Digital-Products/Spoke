@@ -140,11 +140,16 @@ async function getMessagingServiceSid(
   return await cacheableData.organization.getMessageServiceSid(
     organization,
     contact,
-    message.text
+    message
   );
 }
 
 async function sendMessage(message, contact, trx, organization, campaign) {
+  if (!organization) {
+    organization = await cacheableData.organization.load_from_messageservice(
+      message.messageservice_sid
+    );
+  }
   const twilio = await getTwilio(organization);
   const APITEST = /twilioapitest/.test(message.text);
   if (!twilio && !APITEST) {
@@ -210,17 +215,13 @@ async function sendMessage(message, contact, trx, organization, campaign) {
     }
     const changes = {};
 
-    changes.messageservice_sid = messagingServiceSid
-      ? messagingServiceSid
-      : message.messageservice_sid;
+    changes.messageservice_sid = messagingServiceSid;
 
     const messageParams = Object.assign(
       {
         to: message.contact_number,
         body: message.text,
-        messagingServiceSid: messagingServiceSid
-          ? messagingServiceSid
-          : message.messageservice_sid,
+        messagingServiceSid: messagingServiceSid,
         statusCallback: process.env.TWILIO_STATUS_CALLBACK_URL
       },
       twilioValidityPeriod ? { validityPeriod: twilioValidityPeriod } : {},

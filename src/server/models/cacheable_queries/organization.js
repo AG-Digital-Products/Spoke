@@ -10,12 +10,18 @@ const organizationCache = {
       await r.redis.delAsync(cacheKey(id));
     }
   },
-  getMessageServiceSid: async (organization, contact, messageText) => {
+  getMessageServiceSid: async (organization, contact, message) => {
     // Note organization won't always be available, so we'll need to conditionally look it up based on contact
-    if (messageText && /twilioapitest/.test(messageText)) {
+    if (messageText && /twilioapitest/.test(message.text)) {
       return "fakeSid_MK123";
     }
-    return getConfig("TWILIO_MESSAGE_SERVICE_SID", organization);
+    globalMessageServiceSid = getConfig(
+      "TWILIO_MESSAGE_SERVICE_SID",
+      organization
+    );
+    return globalMessageServiceSid === message.messageservice_sid
+      ? globalMessageServiceSid
+      : message.messageservice_sid;
   },
   getTwilioAuth: async organization => {
     const hasOrgToken = hasConfig("TWILIO_AUTH_TOKEN_ENCRYPTED", organization);
@@ -53,6 +59,32 @@ const organizationCache = {
           .multi()
           .set(cacheKey(id), JSON.stringify(dbResult))
           .expire(cacheKey(id), 43200)
+          .execAsync();
+      }
+    }
+    return dbResult;
+  },
+  load_from_messageservice: async messageservice_sid => {
+    if (r.redis) {
+      const orgData = await r.redis.getAsync(cacheKey(messageservice_sid));
+      if (orgData) {
+        return JSON.parse(orgData);
+      }
+    }
+    const [dbResult] = await r.knex.raw(
+      `SELECT * FROM organization WHERE features LIKE '%${messageservice_sid}%';`
+    );
+    if (dbResult) {
+      if (dbResult.features) {
+        dbResult.feature = JSON.parse(dbResult.features);
+      } else {
+        dbResult.feature = {};
+      }
+      if (r.redis) {
+        await r.redis
+          .multi()
+          .set(cacheKey(messageservice_sid), JSON.stringify(dbResult))
+          .expire(cacheKey(messageservice_sid), 43200)
           .execAsync();
       }
     }
