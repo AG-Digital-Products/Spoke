@@ -180,7 +180,7 @@ export const erroredMessageSender = messageSenderCreator(function(mQuery) {
   // However, if it's still marked SENDING, then it must have failed to go out.
   // This is OK to run in a scheduled event because we are specifically narrowing on the error_code
   // It's important though that runs are never in parallel
-  const twentyMinutesAgo = new Date(new Date() - 1000 * 60 * 60 * 24 * 7);
+  const twentyMinutesAgo = new Date(new Date() - 1000 * 60 * 20);
   return mQuery
     .where("created_at", ">", twentyMinutesAgo)
     .where("error_code", "<", 0);
@@ -283,7 +283,7 @@ export async function dispatchProcesses(event, dispatcher, eventCallback) {
   const toDispatch =
     event.processes || (JOBS_SAME_PROCESS ? syncProcessMap : processMap);
   for (let p in toDispatch) {
-    if (p in processMap) {
+    if (p in (JOBS_SAME_PROCESS ? syncProcessMap : processMap)) {
       // / not using dispatcher, but another interesting model would be
       // / to dispatch processes to other lambda invocations
       // dispatcher({'command': p})
