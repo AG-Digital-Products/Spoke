@@ -71,7 +71,7 @@ const organizationCache = {
         return JSON.parse(orgData);
       }
     }
-    const [dbResult] = await r.knex.raw(
+    const dbResult = await r.knex.raw(
       `SELECT * FROM organization WHERE features LIKE '%${messageservice_sid}%';`
     );
     if (dbResult) {
