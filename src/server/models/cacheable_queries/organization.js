@@ -12,7 +12,7 @@ const organizationCache = {
   },
   getMessageServiceSid: async (organization, contact, message) => {
     // Note organization won't always be available, so we'll need to conditionally look it up based on contact
-    if (messageText && /twilioapitest/.test(message.text)) {
+    if (message.text && /twilioapitest/.test(message.text)) {
       return "fakeSid_MK123";
     }
     globalMessageServiceSid = getConfig(
