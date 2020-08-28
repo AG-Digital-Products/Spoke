@@ -15,7 +15,7 @@ const organizationCache = {
     if (message.text && /twilioapitest/.test(message.text)) {
       return "fakeSid_MK123";
     }
-    globalMessageServiceSid = getConfig(
+    const globalMessageServiceSid = getConfig(
       "TWILIO_MESSAGE_SERVICE_SID",
       organization
     );
