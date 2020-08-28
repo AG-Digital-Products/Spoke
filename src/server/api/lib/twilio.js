@@ -150,6 +150,7 @@ async function sendMessage(message, contact, trx, organization, campaign) {
     organization = await cacheableData.organization.load_from_messageservice(
       message.messageservice_sid
     );
+    console.log("organization loaded: ", organization);
   }
   const twilio = await getTwilio(organization);
   const APITEST = /twilioapitest/.test(message.text);
