@@ -12,20 +12,16 @@ const organizationCache = {
   },
   getMessageServiceSid: async (organization, contact, message) => {
     // Note organization won't always be available, so we'll need to conditionally look it up based on contact
-    if (message) {
-      if (message.text && /twilioapitest/.test(message.text)) {
-        return "fakeSid_MK123";
-      }
-      const globalMessageServiceSid = getConfig(
-        "TWILIO_MESSAGE_SERVICE_SID",
-        organization
-      );
-      return globalMessageServiceSid === message.messageservice_sid
-        ? globalMessageServiceSid
-        : message.messageservice_sid;
-    } else {
-      return getConfig("TWILIO_MESSAGE_SERVICE_SID", organization);
+    if (message.text && /twilioapitest/.test(message.text)) {
+      return "fakeSid_MK123";
     }
+    const globalMessageServiceSid = getConfig(
+      "TWILIO_MESSAGE_SERVICE_SID",
+      organization
+    );
+    return globalMessageServiceSid === message.messageservice_sid
+      ? globalMessageServiceSid
+      : message.messageservice_sid;
   },
   getTwilioAuth: async organization => {
     const hasOrgToken = hasConfig("TWILIO_AUTH_TOKEN_ENCRYPTED", organization);
