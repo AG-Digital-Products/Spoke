@@ -124,12 +124,7 @@ async function getMessagingServiceSid(
   message,
   campaign
 ) {
-  if (
-    getConfig(
-      "EXPERIMENTAL_TWILIO_PER_CAMPAIGN_MESSAGING_SERVICE",
-      organization
-    )
-  ) {
+  if (getConfig("TWILIO_MULTI_ORG", organization)) {
     const campaign =
       campaign || (await cacheableData.campaign.load(contact.campaign_id));
     if (campaign.messageservice_sid) {
