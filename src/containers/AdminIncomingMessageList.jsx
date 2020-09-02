@@ -41,6 +41,32 @@ export class AdminIncomingMessageList extends Component {
       clearSelectedMessages: false,
       ...filters
     };
+    if (query.campaigns) {
+      this.state.campaignsFilter.campaignIds = query.campaigns.split(",");
+    }
+    if (query.messageStatus) {
+      this.state.contactsFilter.messageStatus = query.messageStatus;
+    }
+    if (query.errorCode) {
+      this.state.contactsFilter.errorCode = query.errorCode.split(",");
+    }
+    if (query.tags) {
+      if (/^[a-z]/.test(query.tags)) {
+        this.state.tagsFilter = { [query.tags]: true };
+      } else {
+        const selectedTags = {};
+        query.tags.split(",").forEach(t => {
+          selectedTags[t] = props.organization.organization.tags.find(
+            ot => ot.id === t
+          );
+        });
+        this.state.tagsFilter = { selectedTags };
+      }
+    }
+    const newTagsFilter = AdminIncomingMessageList.tagsFilterStateFromTagsFilter(
+      this.state.tagsFilter
+    );
+    this.state.contactsFilter.tags = newTagsFilter;
   }
 
   shouldComponentUpdate = (dummy, nextState) => {

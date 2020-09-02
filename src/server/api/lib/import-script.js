@@ -458,6 +458,39 @@ const makeActionHandlersList = actionHandlerParagraphs => {
   return actionHandlers;
 };
 
+const makeActionHandlersList = actionHandlerParagraphs => {
+  const actionHandlers = {};
+  while (actionHandlerParagraphs[0]) {
+    const handler = {};
+
+    const paragraph = actionHandlerParagraphs.shift();
+    if (!paragraph.isParagraphItalic) {
+      throw new Error(
+        `Action handler format error -- can't find a italic paragraph. Look for [${paragraph.text}]`
+      );
+    }
+    handler.label = paragraph.text;
+
+    while (
+      actionHandlerParagraphs[0] &&
+      !actionHandlerParagraphs[0].isParagraphItalic
+    ) {
+      handler.name = actionHandlerParagraphs.shift().text;
+      handler.data = actionHandlerParagraphs.shift().text;
+    }
+
+    if (!handler.name || !handler.data) {
+      throw new Error(
+        `Action handler format error -- handler missing name or data. Look for [${handler.label}]`
+      );
+    }
+
+    actionHandlers[handler.label.trim().toLowerCase()] = handler;
+  }
+
+  return actionHandlers;
+};
+
 const importScriptFromDocument = async (campaignId, scriptUrl) => {
   const match = scriptUrl.match(/document\/d\/(.*)\//);
   if (!match || !match[1]) {

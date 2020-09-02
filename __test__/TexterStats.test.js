@@ -66,6 +66,20 @@ describe("TexterStats (Non-dynamic campaign)", () => {
     expect(stats.text()).toEqual(
       "Test Tester <Link />19%<LinearProgress /><Link />  |  <Link />Someone Else (Suspended) <Link />99%<LinearProgress /><Link />  |  <Link />"
     );
+    expect(
+      stats
+        .find("Link")
+        .at(0)
+        .children()
+        .text()
+    ).toBe("Test Tester");
+    expect(
+      stats
+        .find("Link")
+        .at(1)
+        .children()
+        .text()
+    ).toBe("Someone Else (Suspended)");
   });
 
   it("creates linear progress correctly", () => {
@@ -88,5 +102,19 @@ describe("TexterStats (Dynamic campaign)", () => {
     expect(stats.text()).toEqual(
       "Test Tester <Link />45 initial messages sent. <Link />  |  <Link />Someone Else (Suspended) <Link />541 initial messages sent. <Link />  |  <Link />"
     );
+    expect(
+      stats
+        .find("Link")
+        .at(0)
+        .children()
+        .text()
+    ).toBe("Test Tester");
+    expect(
+      stats
+        .find("Link")
+        .at(2)
+        .children()
+        .text()
+    ).toBe("Someone Else (Suspended)");
   });
 });
