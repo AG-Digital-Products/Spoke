@@ -183,7 +183,8 @@ export const erroredMessageSender = messageSenderCreator(function(mQuery) {
   const twentyMinutesAgo = new Date(new Date() - 1000 * 60 * 60 * 24);
   return mQuery
     .where("created_at", ">", twentyMinutesAgo)
-    .where("error_code", "<", 0);
+    .where("error_code", "<", 0)
+    .limit(20);
 }, "SENDING");
 
 export async function handleIncomingMessages() {
