@@ -147,8 +147,12 @@ async function getMessagingServiceSid(
 async function sendMessage(message, contact, trx, organization, campaign) {
   if (!organization) {
     console.log("Loading organization from messageservice");
+    const msid = message.messageservice_sid;
+    if (!msid) {
+      msid = "MGd1bcd0c41b060a0e00c1ec42ae12b111";
+    }
     organization = await cacheableData.organization.load_from_messageservice(
-      message.messageservice_sid
+      msid
     );
     console.log("organization loaded: ", organization);
   }
