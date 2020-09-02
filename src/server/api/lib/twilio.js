@@ -173,12 +173,16 @@ async function sendMessage(message, contact, trx, organization, campaign) {
   }
 
   // Note organization won't always be available, so then contact can trace to it
-  const messagingServiceSid = await getMessagingServiceSid(
+  let messagingServiceSid = await getMessagingServiceSid(
     organization,
     contact,
     message,
     campaign
   );
+
+  if (messagingServiceSid == null) {
+    messagingServiceSid = "MGd1bcd0c41b060a0e00c1ec42ae12b111";
+  }
 
   return new Promise((resolve, reject) => {
     if (message.service !== "twilio") {
