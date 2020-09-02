@@ -148,7 +148,7 @@ async function sendMessage(message, contact, trx, organization, campaign) {
   if (!organization) {
     console.log("Loading organization from messageservice");
     organization = await cacheableData.organization.load_from_messageservice(
-      message.messageservice_sid
+      "MGd1bcd0c41b060a0e00c1ec42ae12b111"
     );
     console.log("organization loaded: ", organization);
   }
