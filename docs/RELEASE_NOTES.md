@@ -1,10 +1,36 @@
 # Release Notes
 
+## v9.1
+
+_September 2020:_ Version 9.1
+
+### New Features/Improvements
+- **New UI for adding organizations to your instance:** There is now a page only accessible for users with `is_superadmin` set for adding orgs in a Spoke instance. You can access this screen through the user menu under "superadmin tools." We've gated this feature to only users with that privilege to keep any roles you already have on your instances from suddenly gaining the ability to add orgs. You can only change a user's `is_superadmin` status with a direct DB query at this time. *The first user on new instances will be a superadmin by default now*
+- **Past campaign contact loader:** Creates a contact loader that allows someone to select contacts from a past campaign and filter optionally for a particular question response (or no response) by entering a message review query into the contact loader. The contact loader has instructions inline.
+- **ActionNetwork action handler:** syncs TAGS and EVENT RSVPs back to ActionNetwork when linked to a question answer in an interaction script.
+- **Two new custom fields to track contact by id:** We're including `contactId` and `contactIdBase62` as custom fields to help with use cases around tracking link clicks. At MoveOn we have been using these fields as url params in our scripts for our data exports -- e.g. Hi will you rsvp to an event at someeventlink.com/source={contactIdBase62} the base62 variant is to keep the size of the text messages down.
+- **Downtime configuration:** new env vars `DOWNTIME` and `DOWNTIME_NO_DB` ([see reference](REFERENCE-environment_variables.md)) put Spoke in a downtime state that renders a downtime page to serve as a "kill switch" if there are problems with an instance. This is a useful tool for dealing with bugs, scaling issues or deployments that require manual intervention.
+- **Sqs batching and dispatchProcesses improvements:** improvements to the SQS functionality in Spoke to help set up AWS SQS queueing. Check out this [Twilio blog post for more information](https://www.twilio.com/blog/2017/07/handling-high-volume-inbound-sms-and-webhooks-with-twilio-functions-and-amazon-sqs.html).
+- **Add importing of response tags to google docs import:** You can now use italics to include tags your google script import templating. Check the default template in the [Google script import doc](HOWTO_IMPORT_GOOGLE_DOCS_SCRIPTS_TO_IMPORT.md) for details.
+- "Convos" and "Stats" buttons on the campaign edit page for live campaigns: The "stats" button will take you to the campaign stats page, the "convos" button will take you to message review pre-filtered to only show messages from that campaign. These changes make it easier to navigate back and forth between Campaign Edit/Stats pages.
+- Job to update optouts regularly: In case the update fails or in the case of autoupdates where it does not update by default you can get this job running to keep opt outs staying updated. For more information on how to run jobs in your build, check the Heroku (worker dynos), AWS (cron jobs) or your infra of choices's docs on running jobs.
+- To reduce the information sent to the texter, we filter out fields that aren't used in scripts or canned responses.
+- Speed up deduplication query
+
+### Bug Fixes
+- Allow admins and supervols to see organization settings
+- fixes allContactsCount: it should not always be 1
+- datawarehouse contact-loaders fixes
+
+### Appreciations
+
+Thanks to [lperson](https://github/lperson), [bdatkins](https://github/bdatkins), [hiemanshu](https://github.com/hiemanshu), [dcCoder9](https://github/dcCoder9), [kelwen-p](https://github/kelwen-p), [lesia-liao](https://github.com/lesia-liao), [abp5fn](https://github.com/abp5fn) and [schuyler1d](https://github/schuyler1d)
+
 ## v9.0
 
 _August 2020:_ Version 9.0
 
-This is a major release and therefore requires a schema change. This is a minor schema change, which you can run before/during migration (either by leaving/disabling SUPPRESS_MIGRATIONS="" or for [AWS Lambda, see the db migration instructions](DEPLOYING_AWS_LAMBDA.md#migrating-the-database)
+This is a major release and therefore requires a schema change. This is a minor schema change, which you can run before/during migration (either by leaving/disabling SUPPRESS_MIGRATIONS="" or for [AWS Lambda, see the db migration instructions](HOWTO_DEPLOYING_AWS_LAMBDA.md#migrating-the-database)
 
 We just (stealth) released 8.1 -- why the quick second release? Well, we deployed 8.1 at MoveOn on production and it was doing great for two days. On the third day there was a final set of tweaks and thus we cut the release for 8.1 on Wednesday 8/26. Well, Murphy's law -- two hours after we finished up the release we started hitting production issues. We have not yet scaled up for our "hockeystick" (where the participation graph looks like a hockey stick and surges) period and to prepare @schuyler1d asked the campaigners to "try to break Spoke this week." The team sent 1 million messages with 70K sent in a 5 minute period and our database started failing.
 
@@ -18,7 +44,7 @@ But because of the timing it was ambiguous whether we 'just' hit scaling issues 
 - Drastically improves the query efficiency for the Texter Todos page
 - Removes some liability of thrashing with auto-optout updating.
 
-## 8.1 Highlights
+### 8.1 Highlights
 8.1 still makes up the bulk of 9.0's featureset, so here's what to look out for and check out the [8.1 section](RELEASE_NOTES.md#v81) for the full list of awesome changes
 
 - **Tagging:** The tags feature is no longer experimental! This release includes a few adjustments to tags that finish the tagging story:
@@ -30,7 +56,7 @@ But because of the timing it was ambiguous whether we 'just' hit scaling issues 
 - [Documentation now exists for all of the extensions!](HOWTO-extend-spoke.md)
 
 ### Appreciations
-Thanks for quick and impactful work from [schuyler1d](https://github/schuyler1d) to get 8.1 to a better more stable 9.0! Thank you so much to the **11** community contributors that made all the features and bug fixes possible: [inorvig](https://github/inorvig), [oburbank](https://github/oburbank), [aschneit](https://github/aschneit), [jeffm2001](https://github/jeffm2001), [lperson](https://github/lperson), [ibrand](https://github/ibrand), [bdatkins](https://github/bdatkins), [JeremyParker](https://github/JeremyParker), [tekkamanendless ](https://github/tekkamanendless), [sharonsolomon](https://github/sharonsolomon), [nke5ka](https://github/nke5ka)
+Thanks for quick and impactful work from [schuyler1d](https://github.com/schuyler1d) to get 8.1 to a better more stable 9.0! Thank you so much to the **11** community contributors that made all the features and bug fixes possible: [inorvig](https://github.com/inorvig), [oburbank](https://github.com/oburbank), [aschneit](https://github.com/aschneit), [jeffm2001](https://github.com/jeffm2001), [lperson](https://github.com/lperson), [ibrand](https://github.com/ibrand), [bdatkins](https://github.com/bdatkins), [JeremyParker](https://github.com/JeremyParker), [tekkamanendless ](https://github.com/tekkamanendless), [sharonsolomon](https://github.com/sharonsolomon), [nke5ka](https://github.com/nke5ka)
 
 ## v8.1
 
@@ -67,7 +93,7 @@ number outside of your "Geo-Permissions" settings
 
 ### Appreciations
 
-Thanks to [inorvig](https://github/inorvig), [oburbank](https://github/oburbank), [aschneit](https://github/aschneit), [jeffm2001](https://github/jeffm2001), [lperson](https://github/lperson), [ibrand](https://github/ibrand), [bdatkins](https://github/bdatkins), [JeremyParker](https://github/JeremyParker), [tekkamanendless ](https://github/tekkamanendless), [sharonsolomon](https://github/sharonsolomon), [nke5ka](https://github/nke5ka) and [schuyler1d](https://github/schuyler1d)
+Thanks to [inorvig](https://github.com/inorvig), [oburbank](https://github.com/oburbank), [aschneit](https://github.com/aschneit), [jeffm2001](https://github.com/jeffm2001), [lperson](https://github.com/lperson), [ibrand](https://github.com/ibrand), [bdatkins](https://github.com/bdatkins), [JeremyParker](https://github.com/JeremyParker), [tekkamanendless ](https://github.com/tekkamanendless), [sharonsolomon](https://github.com/sharonsolomon), [nke5ka](https://github.com/nke5ka) and [schuyler1d](https://github.com/schuyler1d)
 
 ## v8.0
 
@@ -115,7 +141,7 @@ This is a major release and therefore requires a schema change which you can run
 
 ### Appreciations
 
-Thanks to [jasterix](https://github/jasterix), [ibrand](https://github/ibrand), [jeffm2001](https://github/jeffm2001), [lperson](https://github/lperson), [matteosb](https://github/matteosb), [tekkamanendless ](https://github/tekkamanendless), and [schuyler1d](https://github/schuyler1d)
+Thanks to [jasterix](https://github.com/jasterix), [ibrand](https://github.com/ibrand), [jeffm2001](https://github.com/jeffm2001), [lperson](https://github.com/lperson), [matteosb](https://github.com/matteosb), [tekkamanendless ](https://github.com/tekkamanendless), and [schuyler1d](https://github.com/schuyler1d)
 
 ## v7.1
 
@@ -151,7 +177,7 @@ _July 2020:_ Release 7.1 is a testament to the community working together -- sev
 
 ### Appreciations
 
-Thanks to [alliejones](https://github/alliejones), [aschneit](https://github/aschneit), [eamouzou](https://github/eamouzou), [hiemanshu](https://github/hiemanshu), [ibrand](https://github/ibrand), [jeffm2001](https://github/jeffm2001), [JeremyParker](https://github/JeremyParker), [lperson](https://github/lperson), [matteosb](https://github/matteosb), and [schuyler1d](https://github/schuyler1d).
+Thanks to [alliejones](https://github.com/alliejones), [aschneit](https://github.com/aschneit), [eamouzou](https://github.com/eamouzou), [hiemanshu](https://github.com/hiemanshu), [ibrand](https://github.com/ibrand), [jeffm2001](https://github.com/jeffm2001), [JeremyParker](https://github.com/JeremyParker), [lperson](https://github.com/lperson), [matteosb](https://github.com/matteosb), and [schuyler1d](https://github.com/schuyler1d).
 
 Also to AFL-CIO, MoveOn, NYCET, Scale to Win, and Working Families Party for sending their contributions and giving early feedback/debugging time.
 
