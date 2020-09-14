@@ -160,9 +160,9 @@ const messageSenderCreator = (subQuery, defaultStatus) => {
       }
       if (
         contextVars &&
-        typeof contextVars.remainingMilliseconds === "function"
+        typeof contextVars.getRemainingTimeInMillis === "function"
       ) {
-        if (contextVars.remainingMilliseconds() < 5000) {
+        if (contextVars.getRemainingTimeInMillis() < 270000) {
           return sentCount;
         }
       }
@@ -283,6 +283,7 @@ export async function updateOptOuts(event, context, eventCallback) {
   // always updated and depends on this batch job to run
   // We avoid it in-process to avoid db-write thrashing on optouts
   // so they don't appear in queries
+  console.log("Running updateOptOuts");
   await cacheableData.optOut.updateIsOptedOuts(query =>
     query
       .join("opt_out", {
