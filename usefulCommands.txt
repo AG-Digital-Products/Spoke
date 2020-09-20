@@ -51,6 +51,14 @@ Reach98 Migrate Database
 AWS_PROFILE=[AWS_PROFILE] claudia test-lambda --event ./deploy/lambda-migrate-database.js
 NOTE: Every time there is a schema change from a MoveOn/Spoke release, run this after doing a Claudia Update.
 
+Reach98 Retrieve Features Dictionary (SQL)
+SELECT features FROM organization WHERE name='<Organization_Name>';
+NOTE: Use this command to get the features dictionary. Necessary for next query.
+
+Reach98 Add NGPVAN API Keys to Features Dictionary (SQL)
+SET features = '{<json data from previous query>, "NGP_VAN_API_KEY": "<apiKey>", "NGP_VAN_APP_NAME":"<appName>"}' WHERE name = '<Organization_Name>';
+NOTE: Use the result from the previous query as a part of this command. Note the distinction between single quotes and double quotes here - you have to follow exactly what's in this command for it to play nice with Postgres.
+
 Reach98 Landing Page access
 ssh -i LightsailDefaultKey-us-east-2.pem ubuntu@3.22.191.71
 NOTE: Use this to SSH into the Lightsail instance hosting the Reach98 landing page
