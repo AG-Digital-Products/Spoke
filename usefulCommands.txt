@@ -1,0 +1,76 @@
+
+Reach98 Production Deployment Script:
+AWS_PROFILE=[AWS_PROFILE] claudia create --handler lambda.handler \
+    --deploy-proxy-api \
+    --set-env-from-json ./production-env.json \
+    --region us-east-2 \
+    --security-group-ids sg-03fe79a14e2cbc3b4 \
+    --subnet-ids subnet-09543d4ebb3b796aa,subnet-09543d4ebb3b796aa \
+    --role SpokeOnLambda \
+    --use-s3-bucket textforagdigital \
+    --memory 512 --timeout 300
+NOTE: This script will likely not be run often. It should only be used on an initial deployment, or if the production lambda instance was completely deleted.
+
+Reach98 Production Update Script:
+AWS_PROFILE=[AWS_PROFILE] claudia update \
+    --use-s3-bucket textforagdigital \
+    --set-env-from-json ./production-env.json
+NOTE: This script should be used sparingly. Only update the production server once the staging server has ben adequately tested.
+*Important* once this script is run, you MUST go into the AWS lambda console and add the REDIS_URL=redis://elc-spoke.5ut7ql.ng.0001.use2.cache.amazonaws.com:6379 to the environment variables.
+
+Reach98 Staging Deploy Script:
+AWS_PROFILE=[AWS_PROFILE] claudia create --handler lambda.handler \
+    --deploy-proxy-api \
+    --set-env-from-json ./stage-env.json \
+    --region us-east-2 \
+    --security-group-ids sg-0e6fe93ca3be0899d \
+    --subnet-ids subnet-0b4b559a3aef4abf7,subnet-0b4b559a3aef4abf7 \
+    --role SpokeOnLambda \
+    --use-s3-bucket reach98-staging \
+    --memory 512 --timeout 300
+NOTE: This script will likely not be run often. It should only be used on an initial deployment, or if the staging lambda instance was completely deleted.
+
+Reach98 Staging Update Script:
+AWS_PROFILE=[AWS_PROFILE] claudia update \
+    --use-s3-bucket reach98-staging \
+    --set-env-from-json ./stage-env.json
+NOTE: This script will likely see a lot of use. Use this every time you want to see a code change on the staging server.
+*Important* once this script is run, you MUST go into the AWS lambda console and add the REDIS_URL= to the environment variables.
+
+
+Reach98 Add Scheduled Event:
+AWS_PROFILE=[AWS_PROFILE] claudia add-scheduled-event \
+    --name spoke-job-runner \
+    --schedule 'rate(5 minutes)' \
+    --event ./deploy/lambda-scheduled-event.json
+NOTE: Use this to add a scheduled function that retries messages that failed to send.
+Before running this script, check in the Cloudwatch dashboard under Rules on the left sidebar to see if there's already a scheduled job running.
+Only run this if there isn't already a scheduled job.
+
+Reach98 Migrate Database
+AWS_PROFILE=[AWS_PROFILE] claudia test-lambda --event ./deploy/lambda-migrate-database.js
+NOTE: Every time there is a schema change from a MoveOn/Spoke release, run this after doing a Claudia Update.
+
+Reach98 Landing Page access
+ssh -i LightsailDefaultKey-us-east-2.pem ubuntu@3.22.191.71
+NOTE: Use this to SSH into the Lightsail instance hosting the Reach98 landing page
+
+Access Reach98 Landing Page Database
+./bin/reach98db (create|destroy|reset|dump|help)
+NOTE: Use this primarily for dump. Destroy and Reset *will destroy existing data that cannot be recovered*.
+
+Install Reach98 Flask App
+./bin/reach98install
+NOTE: This will almost never be used. Only to be used for a fresh install.
+
+Monitor number of outgoing messages
+./bin/reach98monitor
+NOTE: This will automatically be run every 2 minutes in crontab. If you want to run it manually, run it from /home/ubuntu/, not /home/ubuntu/reach98landing.
+
+Run Reach98 Flask App
+./bin/reach98run
+NOTE: Not to be used in production. Only use for development. Will not play nice with Gunicorn and Nginx.
+
+Reach98 Maintenance
+./bin/reach98update
+NOTE: Automatically run at 3AM each day from the /home/ubuntu/reach98maintenance script. Avoid running this script unless site is in maintenance mode.
