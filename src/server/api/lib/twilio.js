@@ -372,9 +372,11 @@ export function postMessageSend(
     }
   }
   let updateQuery = r.knex("message").where("id", message.id);
+  console.log("changesToSave preTRX:", changesToSave);
   if (trx) {
     updateQuery = updateQuery.transacting(trx);
   }
+  console.log("changesToSave postTRX:", changesToSave);
 
   if (hasError) {
     if (err) {
@@ -408,12 +410,18 @@ export function postMessageSend(
       );
     });
   } else {
+    console.log("changesToSave pre: ", changesToSave);
     changesToSave = {
       ...changesToSave,
       send_status: "SENT",
       service: "twilio",
       sent_at: new Date()
     };
+    console.log("changesToSave post: ", changesToSave);
+    console.log("message_id: ", message.id);
+    console.log("DB Host: ", process.env.DB_HOST);
+    console.log("updateQuery: ", updateQuery);
+    // Original
     Promise.all([
       updateQuery.update(changesToSave),
       cacheableData.campaignContact.updateStatus({
@@ -434,6 +442,49 @@ export function postMessageSend(
         );
         reject(err);
       });
+    // Attempt 1
+    // Promise.all([
+    //   updateQuery.update(changesToSave),
+    //   cacheableData.campaignContact.updateStatus({
+    //     ...contact,
+    //     messageservice_sid: changesToSave.messageservice_sid
+    //   })
+    // ])
+    //   .then(result => {
+    //     console.log("Result: ",result);
+    //   })
+    //   .catch(err => {
+    //     console.error(
+    //       "Failed message and contact update on twilio postMessageSend",
+    //       err
+    //     );
+    //   });
+    // Attempt 2
+    // const updateQueryPromise = new Promise(updateQuery.update(changesToSave))
+    //   .then(result => {
+    //     console.log("result: ",result);
+    //   })
+    //   .catch(err => {
+    //     console.error(
+    //       "Failed message update on twilio postMessageSend",
+    //       err
+    //     );
+    //   });
+    // console.log("updateQueryPromise: ",updateQueryPromise);
+    // const updateCachePromise = new Promise(cacheableData.campaignContact.updateStatus({
+    //   ...contact,
+    //   messageservice_sid: changesToSave.messageservice_sid
+    // }))
+    //   .then(cacheResult => {
+    //     console.log("Successful cache save: ",cacheResult);
+    //   })
+    //   .catch(err => {
+    //     console.error(
+    //       "Failed contact update on twilio postMessageSend",
+    //       err
+    //     );
+    //   });
+    // console.log("updateCachePromise: ",updateCachePromise);
   }
 }
 
