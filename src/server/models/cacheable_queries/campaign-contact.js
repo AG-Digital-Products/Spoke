@@ -470,7 +470,7 @@ const campaignContactCache = {
     }
   },
   updateStatus: async (contact, newStatus, moreUpdates) => {
-    // console.log('updateSTATUS', newStatus, contact)
+    console.log("updateStatus: ", newStatus, contact);
     try {
       await r
         .knex("campaign_contact")
@@ -479,6 +479,9 @@ const campaignContactCache = {
           message_status: newStatus,
           updated_at: new Date(),
           ...(moreUpdates || {})
+        })
+        .catch(err => {
+          console.error("Failed to update contact: ", err);
         });
 
       if (r.redis && CONTACT_CACHE_ENABLED) {

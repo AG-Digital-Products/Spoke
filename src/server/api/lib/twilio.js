@@ -421,6 +421,7 @@ export function postMessageSend(
     console.log("message_id: ", message.id);
     console.log("DB Host: ", process.env.DB_HOST);
     console.log("updateQuery: ", updateQuery);
+    console.log("Contact: ", contact);
     // Original
     Promise.all([
       updateQuery.update(changesToSave),
