@@ -590,11 +590,7 @@ async function createMessagingService(organization, friendlyName) {
   const twilioBaseUrl = getConfig("TWILIO_BASE_CALLBACK_URL", organization);
   return await twilio.messaging.services.create({
     friendlyName,
-    statusCallback: urlJoin(
-      twilioBaseUrl,
-      "twilio-message-report",
-      organization.id.toString()
-    ),
+    statusCallback: urlJoin(twilioBaseUrl, "twilio-message-report"),
     inboundRequestUrl: urlJoin(
       twilioBaseUrl,
       "twilio",
