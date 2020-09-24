@@ -5,9 +5,9 @@ import { fade } from "material-ui/utils/colorManipulator";
 
 const muiTheme = getMuiTheme(
   {
-    fontFamily: "Roboto",
+    fontFamily: "Poppins",
     palette: {
-      primary1Color: theme.colors.red,
+      primary1Color: theme.colors.green,
       textColor: theme.text.body.color,
       primary2Color: theme.colors.orange,
       primary3Color: grey400,

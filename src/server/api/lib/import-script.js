@@ -31,8 +31,7 @@ const getDocument = async documentId => {
 
 let actionHandlers = {};
 let namedStyles = [];
-const getNamedStyle = style =>
-  namedStyles.find(x => x.namedStyleType === style);
+const getNamedStyle = style => namedStyles.find(x => x.namedStyleType === style);
 const getParagraphStyle = getOr("", "paragraph.paragraphStyle.namedStyleType");
 const getTextRun = getOr("", "textRun.content");
 const sanitizeTextRun = textRun => textRun.replace("\n", "");
@@ -479,7 +478,9 @@ const importScriptFromDocument = async (campaignId, scriptUrl) => {
   const sections = getSections(document);
 
   const actionHandlerParagraphs = getActionHandlers(sections) || [];
-  actionHandlers = makeActionHandlersList(_.clone(actionHandlerParagraphs));
+  actionHandlers = makeActionHandlersList(
+    _.clone(actionHandlerParagraphs)
+  );
 
   const interactionParagraphs = getInteractions(sections);
   const interactionsHierarchy = makeInteractionHierarchy(

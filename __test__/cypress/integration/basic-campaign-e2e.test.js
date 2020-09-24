@@ -74,7 +74,6 @@ describe("End-to-end campaign flow", () => {
       // TEXTER
       cy.login("texter1");
       cy.visit("/app");
-      cy.wait(500);
       const cardSelector = `div[data-test=assignmentSummary-${campaignId}]`;
       cy.get(cardSelector)
         .contains(campaignTitle)
@@ -95,13 +94,12 @@ describe("End-to-end campaign flow", () => {
       if (Cypress.env("DEFAULT_SERVICE") === "fakeservice") {
         cy.get("button[data-test=send]").click();
         // wait advance to next contact
-        cy.wait(500);
+        cy.wait(200);
         cy.get("textArea[name=messageText]").then(el => {
           expect(el).to.have.text(
-            "Hi Contactfirst1 this is Texter1first, how are you?"
+            "Hi Contactfirst2 this is Texter1first, how are you?"
           );
         });
-        cy.wait(500);
         cy.get("button[data-test=send]").click();
         // Go back to TODOS
         cy.wait(200);

@@ -104,39 +104,17 @@ class Home extends React.Component {
     }
     return (
       <div>
-        <div className={css(styles.header)}>Welcome to Reach98</div>
-        <div className={css(styles.secondaryHeader)}>
-          Powered by A+G and Spoke
+        <div className={css(styles.header)}>
+          Spoke is a new way to run campaigns using text messaging.
         </div>
-        <br />
         <div>
           <a
             id="login"
-            className="button"
+            className={css(styles.link_dark_bg)}
             href="/login"
-            style={{
-              border: "10px",
-              boxSizing: "border-box",
-              display: "inline-block",
-              fontFamily: "Roboto",
-              cursor: "pointer",
-              textDecoration: "none",
-              margin: "0px",
-              padding: "0px",
-              outline: "none",
-              fontWeight: "inherit",
-              position: "relative",
-              height: "36px",
-              lineHeight: "36px",
-              width: "25%",
-              borderRadius: "2px",
-              transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-              backgroundColor: "white",
-              textAlign: "center",
-              color: "#A72A17"
-            }}
+            onClick={this.handleOrgInviteClick}
           >
-            Get Started
+            Login and get started
           </a>
         </div>
       </div>
@@ -148,7 +126,7 @@ class Home extends React.Component {
       <div className={css(styles.container)}>
         <div className={css(styles.logoDiv)}>
           <img
-            src="https://textforagdigital.s3.us-east-2.amazonaws.com/static/752685_Logoopt1_070120_cropped.png"
+            src="https://s3-us-west-1.amazonaws.com/spoke-public/spoke_logo.svg"
             className={css(styles.logoImg)}
           />
         </div>

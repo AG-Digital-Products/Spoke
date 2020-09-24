@@ -50,8 +50,8 @@ class AdminPhoneNumberInventory extends React.Component {
       buyNumbersFormValues: {
         addToOrganizationMessagingService: false
       },
-      sortCol: "areaCode",
-      sortOrder: "asc"
+      sortCol: 'areaCode',
+      sortOrder: 'asc'
     };
   }
 
@@ -154,10 +154,10 @@ class AdminPhoneNumberInventory extends React.Component {
 
   sortTable(table, key, order) {
     table.sort((a, b) => {
-      if (order == "desc") {
+      if (order == 'desc') {
         return a[key] < b[key] ? 1 : -1;
       }
-      if (order == "asc") {
+      if (order == 'asc') {
         return a[key] > b[key] ? 1 : -1;
       }
     });
@@ -179,8 +179,8 @@ class AdminPhoneNumberInventory extends React.Component {
             {...dataTest("areaCode")}
           />
           <Form.Field label="Limit" name="limit" {...dataTest("limit")} />
-          {this.props.data.organization.twilioMessageServiceSid &&
-          !this.props.data.organization.campaignPhoneNumbersEnabled ? (
+          {this.props.data.organization.twilioMessageServiceSid
+            && !this.props.data.organization.campaignPhoneNumbersEnabled ? (
             <Form.Field
               label="Add to this organization's Messaging Service"
               name="addToOrganizationMessagingService"
@@ -246,7 +246,7 @@ class AdminPhoneNumberInventory extends React.Component {
           count={tableData.length}
           showFooterToolbar={false}
           showRowHover
-          initialSort={{ column: "areaCode", order: "asc" }}
+          initialSort={{column: 'areaCode', order: 'asc'}}
           onSortOrderChange={handleSortOrderChange}
         />
         <FloatingActionButton

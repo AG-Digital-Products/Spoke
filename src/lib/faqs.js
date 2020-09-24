@@ -11,22 +11,16 @@ const FAQs = [
       "Please contact your account administrator or Text Team Manager to reset your password."
   },
   {
-    question: "Does Reach98 use my personal phone number to text people?",
+    question: "Does Spoke use my personal phone number to text people?",
     answer:
       "No - We purchase phone numbers and connect them to the application using a service called Twilio. The " +
       "texts you send use those purchased phone numbers."
   },
   {
-    question: "Is Reach98 available as an Android/iPhone app?",
+    question: "Is Spoke available as an Android/iPhone app?",
     answer:
-      "Reach98 is a web-based program you can access from any web browser on your computer, tablet or mobile " +
+      "Spoke is a web-based program you can access from any web browser on your computer, tablet or mobile " +
       "device. No app needed!"
-  },
-  {
-    question: "What is Spoke?",
-    answer:
-      "Spoke is the engine that powers Reach98. It is an open-source software that is maintiained by " +
-      "MoveOn.org. You can read more about it at opensource.moveon.org."
   }
 ];
 
